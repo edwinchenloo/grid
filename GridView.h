@@ -1,17 +1,24 @@
-#include <QApplication>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QGraphicsSimpleTextItem>
+#include <QFont>
+#include <QFontMetrics>
 #include <vector>
+#include "Row.h"
 
-class GridView
+class Grid
     : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    GridView();
-    ~GridView();
+    Grid();
+
+    size_t padding() const { return 2; }
+    size_t columnCount() const { return 100; }
+    size_t rowCount() const { return 200; }
+    size_t columnWidth() const { return _fontMetrics.horizontalAdvance("X") + padding() * 2; };
+    size_t rowHeight() const { return _fontMetrics.height() + padding() * 2; }
+    QGraphicsScene& scene() { return _scene; }
 
 public slots:
     void updateMe();
@@ -19,5 +26,7 @@ public slots:
 protected:
     QGraphicsScene _scene;
     QTimer*        _timer{};
-    std::vector<QGraphicsSimpleTextItem*> _items;
+    std::vector<Row> _rows;
+    QFont           _font;
+    QFontMetrics    _fontMetrics;
 };

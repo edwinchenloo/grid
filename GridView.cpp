@@ -1,52 +1,36 @@
-#include <QFont>
-#include <QFontMetrics>
 #include <QTimer>
-#include "GridView.h"
+#include <QGraphicsLineItem>
+#include "Grid.h"
 
-GridView::GridView()
+Grid::Grid()
     : QGraphicsView()
+    , _font("Courier",12)
+    , _fontMetrics(_font)
 {
-    QFont font("Courier",12);
-    QFontMetrics font_metrics(font);
-    int padding = 2;
-    int column_width = font_metrics.horizontalAdvance("X") + padding * 2;
-    int row_height = font_metrics.height() + padding * 2;
-    int rows = 600, columns = 500;
-
-    for(int x = 0; x < columns + 1; x++) {
-      int line_x = x * column_width;
-      _scene.addLine(line_x, 0, line_x, rows * row_height)->setPen(QPen(Qt::gray));
+    for(size_t x = 0; x < columnCount() + 1; x++) {
+      int line_x = x * columnWidth();
+      _scene.addLine(line_x, 0, line_x, rowCount() * rowHeight())->setPen(QPen(Qt::gray));
     }
 
-    for(int y = 0; y < rows + 1; y++) {
-      int line_y = y * row_height;
-      _scene.addLine(0, line_y, columns * column_width, line_y)->setPen(QPen(Qt::gray));
+    for(size_t y = 0; y < rowCount() + 1; y++) {
+      int line_y = y * rowHeight();
+      _scene.addLine(0, line_y, columnCount() * columnWidth(), line_y)->setPen(QPen(Qt::gray));
     }
 
-    for(int x = 0; x < columns; x++) {
-      for(int y = 0; y < rows; y++) {
-            QGraphicsSimpleTextItem* item = _scene.addSimpleText(QString().setNum(rand() % 10), font);
-            _items.emplace_back(item);
-            item->setPos(x * column_width + padding, y * row_height + padding);
-      }
-    }
-    setScene(&_scene);
+    for(size_t y = 0; y < rowCount(); y++)
+        _rows.emplace(y, *this);
+
+    QGraphicsView::setScene(&_scene);
 
     _timer = new QTimer(this);
     connect(_timer, &QTimer::timeout, this, QOverload<>::of(&GridView::updateMe));
     _timer->start(1000);
 }
 
-GridView::~GridView()
+void Grid::updateMe()
 {
-    for (auto item : _items)
-        delete item;
-}
-
-void GridView::updateMe()
-{
-    for (auto item : _items)
-        item->setText(QString().setNum(rand() % 10));
+    for (auto cell : _cells)
+        cell.changeValue();
 
     invalidateScene();
 }

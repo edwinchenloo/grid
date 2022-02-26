@@ -5,9 +5,9 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    GridView view;
-    view.resize(700, 700);
-    view.show();
+    Grid grid;
+    grid.resize(700, 700);
+    grid.show();
 
     return app.exec();
 }
