@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "GridView.h"
+#include "Grid.h"
 
 int main(int argc, char* argv[])
 {

@@ -17,20 +17,21 @@ Grid::Grid()
       _scene.addLine(0, line_y, columnCount() * columnWidth(), line_y)->setPen(QPen(Qt::gray));
     }
 
+    _rows.reserve(rowCount());
     for(size_t y = 0; y < rowCount(); y++)
-        _rows.emplace(y, *this);
+        _rows.emplace_back(y, *this);
 
     QGraphicsView::setScene(&_scene);
 
     _timer = new QTimer(this);
-    connect(_timer, &QTimer::timeout, this, QOverload<>::of(&GridView::updateMe));
+    connect(_timer, &QTimer::timeout, this, QOverload<>::of(&Grid::updateMe));
     _timer->start(1000);
 }
 
 void Grid::updateMe()
 {
-    for (auto cell : _cells)
-        cell.changeValue();
+    for (auto row : _rows)
+        row.changeValue();
 
     invalidateScene();
 }
