@@ -11,7 +11,7 @@ GridView::GridView()
     int padding = 2;
     int column_width = font_metrics.horizontalAdvance("X") + padding * 2;
     int row_height = font_metrics.height() + padding * 2;
-    int rows = 200, columns = 100;
+    int rows = 600, columns = 500;
 
     for(int x = 0; x < columns + 1; x++) {
       int line_x = x * column_width;
