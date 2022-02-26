@@ -1,11 +1,12 @@
 #pragma once
 
+class Grid;
 class QGraphicsSimpleTextItem;
 
 class Cell
 {
 public:
-    Cell(QGraphicsSimpleTextItem* item, qreal x, qreal y);
+    Cell(Grid& grid, size_t row, size_t column);
 
     void changeValue();
 
