@@ -8,12 +8,12 @@ Grid::Grid()
     , _fontMetrics(_font)
 {
     for(size_t x = 0; x < columnCount() + 1; x++) {
-      int line_x = x * columnWidth();
+      size_t line_x = x * columnWidth();
       _scene.addLine(line_x, 0, line_x, rowCount() * rowHeight())->setPen(QPen(Qt::gray));
     }
 
     for(size_t y = 0; y < rowCount() + 1; y++) {
-      int line_y = y * rowHeight();
+      size_t line_y = y * rowHeight();
       _scene.addLine(0, line_y, columnCount() * columnWidth(), line_y)->setPen(QPen(Qt::gray));
     }
 
