@@ -11,7 +11,7 @@ Row::Row(size_t index, Grid& grid)
     if (!_cells.empty())
     {
         _rect = (*_cells.begin()).rect();
-        _rect.setWidth(_cells.size() * grid.columnWidth());
+        _rect.setWidth((int)(_cells.size() * grid.columnWidth()));
         //qDebug("Row %zu (%d,%d) (%d,%d)", index, _rect.left(), _rect.top(), _rect.right(), _rect.bottom());
     }
 }

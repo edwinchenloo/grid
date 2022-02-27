@@ -9,9 +9,9 @@ Cell::Cell(Grid& grid, size_t row, size_t column)
     size_t y = row * grid.rowHeight();
     _item->setPos(x + grid.padding() + 2, y + grid.padding());
 
-    _rect.moveTo(x, y);
-    _rect.setWidth(grid.columnWidth());
-    _rect.setHeight(grid.rowHeight());
+    _rect.moveTo((int)x, (int)y);
+    _rect.setWidth((int)grid.columnWidth());
+    _rect.setHeight((int)grid.rowHeight());
 }
 
 void Cell::changeValue(const QRect& area)

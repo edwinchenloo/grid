@@ -1,4 +1,4 @@
-CONFIG += debug precompile_header
+CONFIG += release precompile_header
 QT += gui widgets
 PRECOMPILED_HEADER = GridPch.h
 SOURCES += main.cpp Cell.cpp Grid.cpp Row.cpp
