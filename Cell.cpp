@@ -21,14 +21,8 @@ Cell::Cell(Grid& grid, const Row& row, size_t column)
     _value = sz;
 }
 
-void Cell::changeValue()//const QRect& area)
+void Cell::changeValue()
 {
-    //if (rect().left() >= area.right())
-    //    return false;
-
-    //if (rect().right() <= area.left())
-    //    return false;
-
     _value[3] = QChar('a' + (rand() % 26));
    _item->setText(_value);
 }
