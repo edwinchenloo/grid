@@ -29,6 +29,6 @@ void Cell::changeValue()//const QRect& area)
     //if (rect().right() <= area.left())
     //    return false;
 
-    _value[3] = 'a' + (rand() % 26);
+    _value[3] = QChar('a' + (rand() % 26));
    _item->setText(_value);
 }
