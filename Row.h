@@ -11,7 +11,7 @@ public:
     Row(Grid& grid, size_t index);
 
     void changeValue(size_t start, size_t end);
-    const QRect& rect() const { return _rect; }
+    const QRectF& rect() const { return _rect; }
     size_t index() const { return _index; }
     const Cells& cells() const { return _cells; }
     Grid& grid() { return _grid; }
@@ -21,5 +21,5 @@ protected:
     Grid& _grid;
     const size_t _index;
     Cells _cells;
-    QRect _rect;
+    QRectF _rect;
 };
