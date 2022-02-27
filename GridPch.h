@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QtGui>
 
+#include <algorithm>
 #include <cassert>
 #include <ciso646>
 #include <cstddef>

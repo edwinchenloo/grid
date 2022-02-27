@@ -2,25 +2,33 @@
 #include "Cell.h"
 #include "Grid.h"
 
-Cell::Cell(Grid& grid, size_t row, size_t column)
-    : _item(grid.scene().addSimpleText("0", grid.font()))
+Cell::Cell(Grid& grid, const Row& row, size_t column)
+    : _value("000,000")
+    , _item(grid.scene().addSimpleText(_value, grid.font()))
+    , _row(row)
+    , _index(column)
 {
     size_t x = column * grid.columnWidth();
-    size_t y = row * grid.rowHeight();
+    size_t y = row.index() * grid.rowHeight();
     _item->setPos(x + grid.padding() + 2, y + grid.padding());
 
     _rect.moveTo((int)x, (int)y);
     _rect.setWidth((int)grid.columnWidth());
     _rect.setHeight((int)grid.rowHeight());
+
+    char sz[32];
+    sprintf(sz, "%03zu,%03zu", row.index(), index());
+    _value = sz;
 }
 
-void Cell::changeValue(const QRect& area)
+void Cell::changeValue()//const QRect& area)
 {
-    if (rect().left() >= area.right())
-        return;
+    //if (rect().left() >= area.right())
+    //    return false;
 
-    if (rect().right() <= area.left())
-        return;
+    //if (rect().right() <= area.left())
+    //    return false;
 
-   _item->setText(QString().setNum(rand() % 10));
+    _value[3] = 'a' + (rand() % 26);
+   _item->setText(_value);
 }

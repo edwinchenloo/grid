@@ -10,6 +10,7 @@ Grid::Grid()
     , _fontMetrics(_font)
 {
     QPen pen(Qt::gray);
+    _font.setStyleHint(QFont::TypeWriter);
 
     // Draw column vertical lines
     for(size_t x = columnCount() * columnWidth(); x > 0; x -= columnWidth())
@@ -39,8 +40,13 @@ void Grid::onTimer()
 {
     //qDebug("refreshing (%d,%d) (%d,%d)", _area.left(), _area.top(), _area.right(), _area.bottom());
 
-    for (Row& row : _rows)
-        row.changeValue(_area);
+    if (_rows.empty())
+        return;
+
+    //qDebug("refresh col %zu to %zu", columnStart, columnEnd);
+
+    for (Rows::iterator itRow = _itRowStart; itRow != _itRowEnd; ++itRow)
+        (*itRow).changeValue(_columnStart, _columnEnd);
 
     invalidateScene();
 }
@@ -49,12 +55,16 @@ void Grid::onHorizontalScroll(int h)
 {
     _area.moveLeft(h);
     qDebug("h:%d %d", _area.left(), _area.right());
+
+    calcColumns();
 }
 
 void Grid::onVerticalScroll(int v)
 {
     _area.moveTop(v);
     qDebug("v:%d %d", _area.top(), _area.bottom());
+
+    calcRows();
 }
 
 void Grid::resizeEvent(QResizeEvent* event)
@@ -62,4 +72,39 @@ void Grid::resizeEvent(QResizeEvent* event)
     _area.setSize(event->size());
     qDebug("size %d x %d", _area.width(), _area.height());
     QGraphicsView::resizeEvent(event);
+
+    calcRows();
+    calcColumns();
 }
+
+void Grid::calcRows()
+{
+    _itRowEnd = std::upper_bound(_rows.begin(), _rows.end(), _area.bottom(),
+                                            [](int bottom, const Row& row) -> bool
+                                            {
+                                               return (row.rect().top() > bottom);
+                                            });
+    _itRowStart = std::lower_bound(_rows.begin(), _rows.end(), _area.top(),
+                                             [](const Row& row, int top) -> bool
+                                             {
+                                                return (row.rect().bottom() < top);
+                                             });
+}
+
+void Grid::calcColumns()
+{
+    const Row& row = *_rows.begin();
+    auto itColumnEnd = std::upper_bound(row.cells().begin(), row.cells().end(), _area.right(),
+                                        [](int right, const Cell& cell) -> bool
+                                        {
+                                            return (cell.rect().left() >= right);
+                                        });
+    auto itColumn = std::lower_bound(row.cells().begin(), row.cells().end(), _area.left(),
+                                     [](const Cell& cell, int left) -> bool
+                                     {
+                                         return (cell.rect().right() < left);
+                                     });
+    _columnStart = (*itColumn).index();
+    _columnEnd = (itColumnEnd == row.cells().end() ? columnCount() : (*itColumnEnd).index());
+}
+

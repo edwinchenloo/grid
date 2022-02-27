@@ -6,7 +6,7 @@ Row::Row(size_t index, Grid& grid)
     : _index(index)
 {
     for (size_t column = 0; column < grid.columnCount(); ++column)
-        _cells.emplace_back(grid, index, column);
+        _cells.emplace_back(grid, *this, column);
 
     if (!_cells.empty())
     {
@@ -16,16 +16,8 @@ Row::Row(size_t index, Grid& grid)
     }
 }
 
-void Row::changeValue(const QRect& area)
+void Row::changeValue(size_t start, size_t end)
 {
-    if (rect().top() >= area.bottom())
-        return;
-
-    if (rect().bottom() <= area.top())
-        return;
-
-    //qDebug("row %zu refresh (%d,%d) (%d,%d)", _index, rect().left(), rect().top(), rect().right(), rect().bottom());
-
-    for (Cell& cell : _cells)
-        cell.changeValue(area);
+    for(; start < end; ++start)
+       _cells[start].changeValue();
 }
