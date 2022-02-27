@@ -8,15 +8,18 @@ class Row
 public:
     using Cells = std::vector<Cell>;
 
-    Row(size_t index, Grid& grid);
+    Row(Grid& grid, size_t index);
 
     void changeValue(size_t start, size_t end);
     const QRect& rect() const { return _rect; }
     size_t index() const { return _index; }
     const Cells& cells() const { return _cells; }
+    Grid& grid() { return _grid; }
+    const Grid& grid() const { return _grid; }
 
 protected:
-    size_t _index;
+    Grid& _grid;
+    const size_t _index;
     Cells _cells;
     QRect _rect;
 };

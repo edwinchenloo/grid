@@ -10,12 +10,12 @@ class Grid
 public:
     Grid();
 
-    size_t padding() const { return 0; }
     size_t columnCount() const { return 150; }
     size_t rowCount() const { return 600; }
-    size_t columnWidth() const { return _fontMetrics.horizontalAdvance("000,000"); };
-    size_t rowHeight() const { return _fontMetrics.height(); }
+    size_t columnWidth() const { return _columnWidth; }
+    size_t rowHeight() const { return _rowHeight; }
     QGraphicsScene& scene() { return _scene; }
+    const QFontMetrics& fontMetrics() const { return _fontMetrics; }
 
 public slots:
     void onTimer();
@@ -37,4 +37,5 @@ protected:
     QRect          _area;
     Rows::iterator _itRowStart, _itRowEnd;
     size_t         _columnStart{}, _columnEnd{1};
+    size_t         _rowHeight{}, _columnWidth{};
 };

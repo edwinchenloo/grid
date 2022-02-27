@@ -2,11 +2,12 @@
 #include "Row.h"
 #include "Grid.h"
 
-Row::Row(size_t index, Grid& grid)
-    : _index(index)
+Row::Row(Grid& grid, size_t index)
+    : _grid(grid)
+    , _index(index)
 {
     for (size_t column = 0; column < grid.columnCount(); ++column)
-        _cells.emplace_back(grid, *this, column);
+        _cells.emplace_back(*this, column);
 
     if (!_cells.empty())
     {

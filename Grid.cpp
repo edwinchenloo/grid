@@ -6,11 +6,18 @@ size_t gMaxY = 0;
 
 Grid::Grid()
     : QGraphicsView()
-    , _font("Courier",12)
+    , _font("Courier New",12)
     , _fontMetrics(_font)
 {
-    QPen pen(Qt::gray);
-    _font.setStyleHint(QFont::TypeWriter);
+    QPen pen(Qt::lightGray);
+    _font.setStyleHint(QFont::Monospace);
+    _font.setStyleStrategy(QFont::PreferAntialias);
+
+    QFontMetrics fontMetrics(_font);
+    _fontMetrics.swap(fontMetrics);
+
+    _columnWidth = _fontMetrics.horizontalAdvance("000,000");
+    _rowHeight = _fontMetrics.height();
 
     // Draw column vertical lines
     for(size_t x = columnCount() * columnWidth(); x > 0; x -= columnWidth())
@@ -22,7 +29,7 @@ Grid::Grid()
 
     _rows.reserve(rowCount());
     for(size_t y = 0; y < rowCount(); y++)
-        _rows.emplace_back(y, *this);
+        _rows.emplace_back(*this, y);
 
     QGraphicsView::setScene(&_scene);
 
