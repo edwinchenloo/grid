@@ -1,8 +1,5 @@
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QFont>
-#include <QFontMetrics>
-#include <vector>
+#pragma once
+#include "GridPch.h"
 #include "Row.h"
 
 class Grid
@@ -21,12 +18,17 @@ public:
     QGraphicsScene& scene() { return _scene; }
 
 public slots:
-    void updateMe();
+    void onTimer();
+    void onHorizontalScroll(int h);
+    void onVerticalScroll(int v);
 
 protected:
+    void resizeEvent(QResizeEvent* event) override;
+
     QGraphicsScene _scene;
     QTimer*        _timer{};
     std::vector<Row> _rows;
     QFont           _font;
     QFontMetrics    _fontMetrics;
+    QRect           _area;
 };

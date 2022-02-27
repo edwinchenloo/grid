@@ -1,6 +1,8 @@
-#include <QTimer>
-#include <QGraphicsLineItem>
+#include "GridPch.h"
 #include "Grid.h"
+
+size_t gMaxX = 0;
+size_t gMaxY = 0;
 
 Grid::Grid()
     : QGraphicsView()
@@ -23,15 +25,41 @@ Grid::Grid()
 
     QGraphicsView::setScene(&_scene);
 
+    connect(verticalScrollBar(), &QScrollBar::valueChanged, this, &Grid::onVerticalScroll);
+    connect(horizontalScrollBar(), &QScrollBar::valueChanged, this, &Grid::onHorizontalScroll);
+
     _timer = new QTimer(this);
-    connect(_timer, &QTimer::timeout, this, QOverload<>::of(&Grid::updateMe));
+    connect(_timer, &QTimer::timeout, this, QOverload<>::of(&Grid::onTimer));
     _timer->start(1000);
+
+    qDebug("max x:%zu y:%zu", gMaxX, gMaxY);
 }
 
-void Grid::updateMe()
+void Grid::onTimer()
 {
-    for (auto row : _rows)
-        row.changeValue();
+    //qDebug("refreshing (%d,%d) (%d,%d)", _area.left(), _area.top(), _area.right(), _area.bottom());
+
+    for (Row& row : _rows)
+        row.changeValue(_area);
 
     invalidateScene();
+}
+
+void Grid::onHorizontalScroll(int h)
+{
+    _area.moveLeft(h);
+    qDebug("h:%d %d", _area.left(), _area.right());
+}
+
+void Grid::onVerticalScroll(int v)
+{
+    _area.moveTop(v);
+    qDebug("v:%d %d", _area.top(), _area.bottom());
+}
+
+void Grid::resizeEvent(QResizeEvent* event)
+{
+    _area.setSize(event->size());
+    qDebug("size %d x %d", _area.width(), _area.height());
+    QGraphicsView::resizeEvent(event);
 }

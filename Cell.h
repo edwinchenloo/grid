@@ -6,11 +6,13 @@ class QGraphicsSimpleTextItem;
 class Cell
 {
 public:
-    Cell(Grid& grid, size_t row, size_t column);
+    Cell(Grid& grid, std::size_t row, std::size_t column);
 
-    void changeValue();
+    void changeValue(const QRect& area);
+    const QRect& rect() const { return _rect; }
 
 protected:
     QGraphicsSimpleTextItem* _item;
+    QRect _rect;
 };
 

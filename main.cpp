@@ -1,4 +1,4 @@
-#include <QApplication>
+#include "GridPch.h"
 #include "Grid.h"
 
 int main(int argc, char* argv[])

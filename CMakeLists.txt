@@ -29,5 +29,5 @@ add_executable(grid
     Row.h
 )
 
-
+target_precompile_headers(grid PUBLIC GridPch.h)
 target_link_libraries(grid Qt${QT_VERSION_MAJOR}::Widgets)

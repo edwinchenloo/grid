@@ -1,7 +1,8 @@
-#CONFIG += debug
+CONFIG += debug precompile_header
 QT += gui widgets
+PRECOMPILED_HEADER = GridPch.h
 SOURCES += main.cpp Cell.cpp Grid.cpp Row.cpp
-HEADERS += Cell.h Grid.h Row.h
+HEADERS += GridPch.h Cell.h Grid.h Row.h
 TARGET = grid
 
 unix {
